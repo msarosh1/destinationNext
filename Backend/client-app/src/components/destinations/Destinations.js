@@ -157,12 +157,12 @@ function Destinations({ destinations, handleGetAddressCallback }) {
               <Typography
                 variant="h6"
                 component="div"
-                sx={{ paddingLeft: "8px" }}
+                sx={{ paddingLeft: "8px", fontSize: 17 }}
               >
                 {destination?.address}
               </Typography>
 
-              <Typography sx={{ paddingLeft: "10px" }}>
+              <Typography sx={{ paddingLeft: "10px", fontSize: 15 }}>
                 {destination?.description}
               </Typography>
               <br />

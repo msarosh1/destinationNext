@@ -32,12 +32,12 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const useStyles = makeStyles(() => ({
-  mapWrapper: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  // mapWrapper: {
+  //   display: "flex",
+  //   justifyContent: "center",
+  //   flexDirection: "column",
+  //   alignItems: "center",
+  // },
 
   heading: {
     color: "#9F9C9B",
@@ -115,6 +115,7 @@ export default function Home() {
               justifyContent: "space-between",
             }}
           >
+            <p></p>
             <div
               style={{
                 display: "flex",
@@ -134,7 +135,6 @@ export default function Home() {
                 DESTINATION NEXT
               </Typography>
             </div>
-
             <Button
               variant="outlined"
               style={{
@@ -164,7 +164,7 @@ export default function Home() {
           <Grid
             container
             spacing={{ xs: 2, md: 3 }}
-            columns={{ xs: 2, md: 12 }}
+            columns={{ xs: 5, md: 12 }}
             justifyContent={"center"}
             sx={{
               height: "calc(100vh - 100px)",
@@ -201,10 +201,19 @@ export default function Home() {
               </Grid>
             ) : null}
 
-            <Grid item xs={8} md={8}>
-              <div className={classes.mapWrapper}>
-                <MapBox selectedAddress={selectedAddress} />
+            <Grid item xs={8} md={8} sx={{ marginTop: 0 }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  color: "#014493",
+                  borderBottom: "1px solid #00498E",
+                  marginBottom: 0,
+                }}
+              >
+                <h3 style={{ marginBottom: 2 }}>Choose your destination</h3>
               </div>
+              <MapBox selectedAddress={selectedAddress} />
             </Grid>
           </Grid>
         </Main>

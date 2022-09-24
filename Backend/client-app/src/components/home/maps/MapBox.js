@@ -31,7 +31,7 @@ const modalStyle = {
 
 const useStyles = makeStyles(() => ({
   wrapper: {
-    padding: "40px 0 30px 0",
+    padding: "30px 0px 35px 0px",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -163,7 +163,12 @@ function MapBox({ selectedAddress }) {
           )}
         </div>
       </div>
-      <div style={{ height: "calc(100vh - 270px)", width: "100vh" }}>
+      <div
+        style={{
+          height: "calc(100vh - 290px)",
+          // width: "100vh",
+        }}
+      >
         <MapGL
           ref={mapRef}
           {...viewport}
