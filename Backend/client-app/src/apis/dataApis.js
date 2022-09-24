@@ -5,6 +5,27 @@ const api = axios.create({
 });
 
 const token = localStorage.getItem("token");
+const userid = localStorage.getItem("userid");
+
+export const getDestinations = async () => {
+  try {
+    const response = await api.get(`get-destinations/${userid}`, {
+      headers: {
+        Authorization: `Token ${token}`,
+        "Content-type": "application/json",
+      },
+    });
+    if (response) {
+      console.log({ response });
+      return response.data;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("error in: getDestinations", { error });
+    return false;
+  }
+};
 
 export const addDestination = async (destinationData) => {
   try {

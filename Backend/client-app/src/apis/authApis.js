@@ -13,7 +13,7 @@ export const login = async (loginData) => {
     });
     if (response) {
       console.log({ response });
-      // save response -> token to localStorage
+      // save response -> token and userid to localStorage
       return response.data;
     } else {
       return false;

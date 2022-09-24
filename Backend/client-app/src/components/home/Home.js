@@ -14,6 +14,7 @@ import NearMeIcon from "@mui/icons-material/NearMe";
 import ReactMapGL from "react-map-gl";
 import { Grid } from "@mui/material";
 import Destinations from "../destinations/Destinations";
+import { getDestinations, addDestination } from "../../apis/dataApis";
 
 const Main = styled("main")(({ theme, open }) => ({
   flexGrow: 1,
@@ -215,7 +216,7 @@ export default function Home() {
                     color: "#014493",
                   }}
                 >
-                  <h3>Saved Destinations</h3>
+                  <h3>Your list</h3>
                 </div>
                 <h6 className={classes.heading}>
                   {destinations ? destinations?.length : 0}&nbsp; Destinations
