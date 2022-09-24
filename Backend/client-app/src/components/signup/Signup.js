@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import signupImg from "../../assets/signup-maps-img.jpg";
+import { signup } from "../../apis/authApis";
 
 const theme = createTheme();
 

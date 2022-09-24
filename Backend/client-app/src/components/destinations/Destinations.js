@@ -11,8 +11,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { makeStyles } from "@mui/styles";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
+import { updateDestination, deleteDestination } from "../../apis/dataApis";
+import { toast } from "react-toastify";
 
-const style = {
+const modalStyle = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -22,24 +24,7 @@ const style = {
   // border: "2px solid #000",
   boxShadow: 24,
   borderRadius: "10px",
-
   p: 4,
-};
-
-const style2 = {
-  position: "absolute",
-  top: "30%",
-  left: "20%",
-  right: "20%",
-  bottom: "30%",
-  border: "1px solid #ccc",
-  background: "#A9CDFD",
-
-  overflow: "auto",
-  WebkitOverflowScrolling: "touch",
-  borderRadius: "10px",
-  outline: "none",
-  padding: "30px",
 };
 
 const useStyles = makeStyles(() => ({
@@ -88,7 +73,9 @@ function Destinations({ destinations }) {
   const classes = useStyles();
   const [isHover, setIsHover] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editDestination, setEditDestination] = useState();
+  const [deleteDestination, setDeleteDestination] = useState();
 
   const handleEditDestination = (event) => {
     event.preventDefault();
@@ -103,11 +90,34 @@ function Destinations({ destinations }) {
       description: data.get("description"),
     };
     console.log({ editData });
+
+    const editResponse = updateDestination(editData);
+
+    if (editResponse) {
+      toast.success("Your destination has been updated!", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    } else {
+      toast.error("Something went wrong. Could not update.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    }
   };
 
   const handleDeleteDestination = (destination) => {
-    // send api call with destination?.id
+    const deleteResponse = deleteDestination(destination);
+
+    if (deleteResponse) {
+      toast.success("Your destination has been deleted!", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    } else {
+      toast.error("Something went wrong. Try again.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    }
   };
+
   return (
     <>
       <Grid
@@ -124,7 +134,7 @@ function Destinations({ destinations }) {
               position: "relative",
               overflow: "hidden",
             }}
-            // className={classes.card}
+            className={classes.card}
             // onMouseOver={() => setIsHover(true)}
             // onMouseOut={() => setIsHover(false)}
             key={index}
@@ -157,6 +167,7 @@ function Destinations({ destinations }) {
                   flexDirection: "row",
                   justifyContent: "space-between",
                   alignItems: "flex-end",
+                  color: "#00489E",
                 }}
               >
                 <EditIcon
@@ -168,7 +179,10 @@ function Destinations({ destinations }) {
                 />
                 <DeleteIcon
                   style={{ cursor: "pointer" }}
-                  onClick={() => handleDeleteDestination()}
+                  onClick={() => {
+                    setDeleteModalOpen(true);
+                    setDeleteDestination(destination);
+                  }}
                 />
               </div>
             </CardContent>
@@ -183,8 +197,13 @@ function Destinations({ destinations }) {
         aria-describedby="modal-modal-description"
         style={{ padding: 3 }}
       >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+        <Box sx={modalStyle}>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            style={{ marginBottom: 15 }}
+          >
             Update Destination
           </Typography>
 
@@ -217,25 +236,67 @@ function Destinations({ destinations }) {
               onChange={({ value }) =>
                 setEditDestination((prev) => ({ ...prev, description: value }))
               }
-              // autoFocus
+              autoFocus
               autoComplete="family-name"
             />
-
-            <Button
-              variant="contained"
-              type="submit"
-              sx={{ mt: 3, mb: 2 }}
+            <div
               style={{
                 display: "flex",
                 justifyContent: "flex-end",
-                fontWeight: 500,
-                // color: "white",
-                // border: "0px solid white",
               }}
             >
-              Update
-            </Button>
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{ mt: 3, mb: 2 }}
+                style={{
+                  fontWeight: 500,
+                }}
+              >
+                Update
+              </Button>
+            </div>
           </Box>
+        </Box>
+      </Modal>
+      <Modal
+        open={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        style={{ padding: 3 }}
+      >
+        <Box sx={modalStyle}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Delete Destination
+          </Typography>
+          <Typography
+            id="modal-modal-title"
+            component="div"
+            style={{ margin: "10px 0px" }}
+          >
+            Are you sure you want to delete?
+          </Typography>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button
+              variant="contained"
+              style={{
+                fontWeight: 500,
+              }}
+              onClick={() => handleDeleteDestination}
+            >
+              Yes
+            </Button>
+            <Button
+              variant="outlined"
+              style={{
+                fontWeight: 500,
+              }}
+              onClick={() => setDeleteModalOpen(false)}
+            >
+              No
+            </Button>
+          </div>
         </Box>
       </Modal>
     </>
