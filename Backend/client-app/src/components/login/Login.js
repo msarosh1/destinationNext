@@ -31,7 +31,7 @@ export default function Login() {
     toast.success("Logged in successfully", {
       position: toast.POSITION.BOTTOM_RIGHT,
     });
-    navigate("/maps");
+    navigate("/home");
   };
 
   return (
