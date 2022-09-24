@@ -124,7 +124,7 @@ function Destinations({ destinations }) {
         justifyContent="flex-start"
         spacing={2}
         className={classes.scrollbar}
-        style={{ maxHeight: "calc(100vh - 220px)", overflow: "auto" }}
+        style={{ maxHeight: "calc(100vh - 240px)", overflow: "auto" }}
       >
         {destinations?.map((destination, index) => (
           <Card

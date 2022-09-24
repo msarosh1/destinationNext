@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import signupImg from "../../assets/signup-maps-img.jpg";
 import { signup } from "../../apis/authApis";
+import { toast } from "react-toastify";
 
 const theme = createTheme();
 
@@ -30,7 +31,19 @@ export default function Signup() {
       password: data.get("password"),
     };
     console.log({ signupData });
-    navigate("/login");
+
+    const signupResponse = signup(signupData);
+
+    if (signupResponse) {
+      toast.success("Signed up successfully", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      navigate("/");
+    } else {
+      toast.error("Unsuccessful. Try again", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    }
   };
 
   return (

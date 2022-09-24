@@ -18,7 +18,7 @@ import Destinations from "../destinations/Destinations";
 const Main = styled("main")(({ theme, open }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
-  marginLeft: 50,
+  marginLeft: 0,
   marginRight: 50,
 }));
 
@@ -52,13 +52,13 @@ const useStyles = makeStyles(() => ({
   },
 
   heading: {
-    color: "#014493",
+    color: "#9F9C9B",
     // fontFamily: "Poopins-Bold",
-    fontSize: 20,
-    borderBottom: "1px solid #014493",
+    fontSize: 16,
+    borderBottom: "1px solid #9F9C9B",
     width: 200,
-    margin: "20px 0",
-    marginBottom: 30,
+    margin: 0,
+    marginBottom: 25,
   },
   searchContainer: {
     display: "flex",
@@ -156,19 +156,6 @@ export default function Home() {
               justifyContent: "space-between",
             }}
           >
-            {/* <Button
-              style={{
-                fontWeight: 500,
-                color: "white",
-                border: "0px solid white",
-              }}
-              sx={{ mt: 3, mb: 2 }}
-              onClick={() => {
-                navigate("/notes");
-              }}
-            >
-              Saved
-            </Button> */}
             <div style={{ display: "flex", flexDirection: "row" }}>
               <NearMeIcon
                 style={{
@@ -219,13 +206,26 @@ export default function Home() {
               overflowX: "hidden",
             }}
           >
-            <Grid item xs={4} md={4}>
-              <h3 className={classes.heading}>
-                {destinations ? destinations?.length : 0}&nbsp; Destinations
-                Found
-              </h3>
-              <Destinations destinations={destinations} />
-            </Grid>
+            {destinations ? (
+              <Grid item xs={3.5} md={3.5}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    color: "#014493",
+                  }}
+                >
+                  <h3>Saved Destinations</h3>
+                </div>
+                <h6 className={classes.heading}>
+                  {destinations ? destinations?.length : 0}&nbsp; Destinations
+                  Found
+                </h6>
+
+                <Destinations destinations={destinations} />
+              </Grid>
+            ) : null}
+
             <Grid item xs={8} md={8}>
               <div className={classes.wrapper}>
                 <div className={classes.searchContainer}>
@@ -237,7 +237,7 @@ export default function Home() {
                   <SearchIcon />
                 </div>
               </div>
-              <div className={classes.mapWrapper}> Map here</div>
+              <div className={classes.mapWrapper}>Map here</div>
             </Grid>
           </Grid>
         </Main>
