@@ -29,19 +29,20 @@ export default function Login() {
       password: data.get("password"),
     };
     console.log({ loginData });
+    navigate("/home");
 
-    const loginResponse = login(loginData);
+    // const loginResponse = login(loginData);
 
-    if (loginResponse) {
-      toast.success("Logged in successfully", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-      navigate("/home");
-    } else {
-      toast.error("Incorrect credentials", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-    }
+    // if (loginResponse) {
+    //   toast.success("Logged in successfully", {
+    //     position: toast.POSITION.BOTTOM_RIGHT,
+    //   });
+    //   navigate("/home");
+    // } else {
+    //   toast.error("Incorrect credentials", {
+    //     position: toast.POSITION.BOTTOM_RIGHT,
+    //   });
+    // }
   };
 
   useEffect(() => {

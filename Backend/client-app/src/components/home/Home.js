@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { toast } from "react-toastify";
 import NearMeIcon from "@mui/icons-material/NearMe";
-import ReactMapGL from "react-map-gl";
 import { Grid } from "@mui/material";
 import Destinations from "../destinations/Destinations";
-import { getDestinations, addDestination } from "../../apis/dataApis";
+import { getDestinations } from "../../apis/dataApis";
+import MapBox from "./maps/MapBox";
 
 const Main = styled("main")(({ theme, open }) => ({
   flexGrow: 1,
@@ -33,18 +32,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const useStyles = makeStyles(() => ({
-  wrapper: {
-    padding: "40px 0 50px 0",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    justifyContent: "space-between",
-    wordWrap: "break-word",
-    minWidth: "400px",
-
-    // border: "1px solid black",
-  },
   mapWrapper: {
     display: "flex",
     flexDirection: "column",
@@ -54,32 +41,10 @@ const useStyles = makeStyles(() => ({
 
   heading: {
     color: "#9F9C9B",
-    // fontFamily: "Poopins-Bold",
-    fontSize: 16,
-    borderBottom: "1px solid #9F9C9B",
-    width: 200,
-    margin: 0,
-    marginBottom: 25,
+    fontSize: 15,
+    margin: "8px 0px 12px",
   },
-  searchContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    height: 45,
-    width: "60%",
-    padding: "3px 20px",
-    borderRadius: 30,
-    minWidth: "400px",
-    border: "1.5px solid black",
-  },
-  searchInput: {
-    display: "flex",
-    flex: 1,
-    border: "none",
-    fontSize: 16,
-    background: "none",
-    outline: "none",
-  },
+
   logoutBtn: {
     fontWeight: "800",
     color: "white",
@@ -95,55 +60,48 @@ export default function Home() {
   const classes = useStyles();
   const navigate = useNavigate();
   const [destinations, setDestinations] = useState();
-
-  const [viewport, setViewPort] = useState({
-    latitude: 45.50884,
-    longitude: -73.58781,
-    width: "100vw",
-    height: "100vh",
-    zoom: 10,
-  });
+  const [selectedAddress, setSelectedAddress] = useState();
 
   useEffect(() => {
     setDestinations([
       {
         id: 1,
         description: "Planning to go there next summer",
-        title: "",
-        address: "Some location, Washington",
+        address: "Wake Forest, North Carolina, United States",
       },
       {
         id: 2,
         description: "Description 2",
-        title: "jcndkjv",
         address: "Address 2",
       },
       {
         id: 3,
         description: "Description 2",
-        title: "jcndkjv",
         address: "Address 3",
       },
       {
         id: 4,
         description: "Description 1",
-        title: "",
         address: "Address 1",
       },
       {
         id: 5,
         description: "Description 2",
-        title: "jcndkjv",
         address: "Address 2",
       },
       {
         id: 6,
         description: "Description 2",
-        title: "jcndkjv",
         address: "Address 3",
       },
     ]);
   }, []);
+
+  useEffect(() => {}, [selectedAddress]);
+
+  const handleGetAddressCallback = (address) => {
+    setSelectedAddress(address);
+  };
 
   return (
     <>
@@ -157,7 +115,13 @@ export default function Home() {
               justifyContent: "space-between",
             }}
           >
-            <div style={{ display: "flex", flexDirection: "row" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
               <NearMeIcon
                 style={{
                   marginTop: 2,
@@ -166,8 +130,8 @@ export default function Home() {
                   width: "30px",
                 }}
               />
-              <Typography variant="h6" noWrap component="div">
-                Destination Next
+              <Typography variant="p" noWrap component="div">
+                DESTINATION NEXT
               </Typography>
             </div>
 
@@ -214,31 +178,33 @@ export default function Home() {
                     display: "flex",
                     justifyContent: "center",
                     color: "#014493",
+                    borderBottom: "1px solid #00498E",
+                    paddingBottom: 0,
                   }}
                 >
-                  <h3>Your list</h3>
+                  <h3 style={{ marginBottom: 3 }}>Your list</h3>
                 </div>
-                <h6 className={classes.heading}>
-                  {destinations ? destinations?.length : 0}&nbsp; Destinations
-                  Found
-                </h6>
+                <span style={{ display: "flex", justifyContent: "flex-end" }}>
+                  {" "}
+                  <h6 className={classes.heading}>
+                    <span style={{ fontSize: 24, color: "#00489E" }}>
+                      {destinations ? destinations?.length : 0}&nbsp;
+                    </span>
+                    destinations found
+                  </h6>
+                </span>
 
-                <Destinations destinations={destinations} />
+                <Destinations
+                  destinations={destinations}
+                  handleGetAddressCallback={handleGetAddressCallback}
+                />
               </Grid>
             ) : null}
 
             <Grid item xs={8} md={8}>
-              <div className={classes.wrapper}>
-                <div className={classes.searchContainer}>
-                  <input
-                    type="text"
-                    placeholder="Address"
-                    className={classes.searchInput}
-                  ></input>
-                  <SearchIcon />
-                </div>
+              <div className={classes.mapWrapper}>
+                <MapBox selectedAddress={selectedAddress} />
               </div>
-              <div className={classes.mapWrapper}>Map here</div>
             </Grid>
           </Grid>
         </Main>

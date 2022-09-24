@@ -69,7 +69,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function Destinations({ destinations }) {
+function Destinations({ destinations, handleGetAddressCallback }) {
   const classes = useStyles();
   const [isHover, setIsHover] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -118,6 +118,11 @@ function Destinations({ destinations }) {
     }
   };
 
+  const handleAutomaticMapHover = (address) => {
+    console.log({ address });
+    handleGetAddressCallback(address);
+  };
+
   return (
     <>
       <Grid
@@ -137,6 +142,7 @@ function Destinations({ destinations }) {
             className={classes.card}
             // onMouseOver={() => setIsHover(true)}
             // onMouseOut={() => setIsHover(false)}
+            onClick={() => handleAutomaticMapHover(destination?.address)}
             key={index}
             sx={{ minWidth: 275, marginBottom: 3 }}
           >
@@ -156,7 +162,7 @@ function Destinations({ destinations }) {
                 {destination?.address}
               </Typography>
 
-              <Typography variant="body2" sx={{ paddingLeft: "10px" }}>
+              <Typography sx={{ paddingLeft: "10px" }}>
                 {destination?.description}
               </Typography>
               <br />
