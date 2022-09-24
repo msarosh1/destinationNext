@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import signinImg from "../../assets/signin-road-img.jpg";
 import { toast } from "react-toastify";
+import { login } from "../../apis/authApis";
 
 const theme = createTheme();
 
@@ -28,11 +29,28 @@ export default function Login() {
       password: data.get("password"),
     };
     console.log({ loginData });
-    toast.success("Logged in successfully", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
-    navigate("/maps");
+    navigate("/home");
+
+    // const loginResponse = login(loginData);
+
+    // if (loginResponse) {
+    //   toast.success("Logged in successfully", {
+    //     position: toast.POSITION.BOTTOM_RIGHT,
+    //   });
+    //   navigate("/home");
+    // } else {
+    //   toast.error("Incorrect credentials", {
+    //     position: toast.POSITION.BOTTOM_RIGHT,
+    //   });
+    // }
   };
+
+  useEffect(() => {
+    const isAlreadyLoggedIn = localStorage.getItem("token");
+    if (isAlreadyLoggedIn) {
+      navigate("/home");
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
