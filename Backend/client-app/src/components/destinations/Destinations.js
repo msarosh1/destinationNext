@@ -42,9 +42,9 @@ const useStyles = makeStyles(() => ({
   },
   rectangle: {
     boxSizing: "border-box",
-    height: 4,
-    background: "#00489e",
-    border: "1px solid rgba(0, 0, 0, 0.1)",
+    height: 0.5,
+    background: "#C1BDB5",
+    border: "0.2px solid rgba(0, 0, 0, 0.1)",
     borderRadius: "3px",
     marginBottom: 2,
   },
@@ -118,9 +118,9 @@ function Destinations({ destinations, handleGetAddressCallback }) {
     }
   };
 
-  const handleAutomaticMapHover = (address) => {
-    console.log({ address });
-    handleGetAddressCallback(address);
+  const handleAutomaticMapHover = (selectedDestination) => {
+    console.log({ selectedDestination });
+    handleGetAddressCallback(selectedDestination);
   };
 
   return (
@@ -142,7 +142,7 @@ function Destinations({ destinations, handleGetAddressCallback }) {
             className={classes.card}
             // onMouseOver={() => setIsHover(true)}
             // onMouseOut={() => setIsHover(false)}
-            onClick={() => handleAutomaticMapHover(destination?.address)}
+            onClick={() => handleAutomaticMapHover(destination)}
             key={index}
             sx={{ minWidth: 275, marginBottom: 3 }}
           >
@@ -285,22 +285,23 @@ function Destinations({ destinations, handleGetAddressCallback }) {
           </Typography>
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
-              variant="contained"
               style={{
                 fontWeight: 500,
+                background: "none",
               }}
-              onClick={() => handleDeleteDestination}
+              onClick={() => setDeleteModalOpen(false)}
             >
-              Yes
+              No
             </Button>
             <Button
               variant="outlined"
               style={{
                 fontWeight: 500,
+                border: "1px solid red",
               }}
-              onClick={() => setDeleteModalOpen(false)}
+              onClick={() => handleDeleteDestination}
             >
-              No
+              Yes
             </Button>
           </div>
         </Box>

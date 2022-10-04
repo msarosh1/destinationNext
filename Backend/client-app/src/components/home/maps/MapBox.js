@@ -3,7 +3,7 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import { makeStyles } from "@mui/styles";
 import Button from "@mui/material/Button";
-import MapGL from "react-map-gl";
+import MapGL, { Marker, Popup } from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { addDestination } from "../../../apis/dataApis";
 import { toast } from "react-toastify";
+import markerImg from "../../../assets/marker.png";
 
 import "./Mapbox.css";
 
@@ -40,34 +41,9 @@ const useStyles = makeStyles(() => ({
 
     // border: "1px solid black",
   },
-  mapWrapper: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  searchContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    height: 45,
-    width: "60%",
-    padding: "3px 20px",
-    borderRadius: 30,
-    minWidth: "400px",
-    border: "1.5px solid black",
-  },
-  searchInput: {
-    display: "flex",
-    flex: 1,
-    border: "none",
-    fontSize: 16,
-    background: "none",
-    outline: "none",
-  },
 }));
 
-function MapBox({ selectedAddress }) {
+function MapBox({ selectedDestination }) {
   const classes = useStyles();
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -81,22 +57,32 @@ function MapBox({ selectedAddress }) {
   const mapRef = useRef();
   const geocoderContainerRef = useRef();
   const [searchResult, setSearchResult] = useState();
+  const [popupSelect, setPopupSelect] = useState(false);
+
   const [address, setAddress] = useState();
+  const [longitude, setLongitude] = useState();
+  const [latitude, setLatitude] = useState();
   const [showAddBtn, setShowAddBtn] = useState(false);
 
   useEffect(() => {
-    console.log({ selectedAddress });
-  }, [selectedAddress]);
+    console.log({ selectedDestination });
+    if (selectedDestination) {
+      setViewport({
+        latitude: selectedDestination?.latitude,
+        longitude: selectedDestination?.longitude,
+        zoom: 10,
+        transitionDuration: 1000,
+      });
+    }
+  }, [selectedDestination]);
 
-  const handleViewportChange = useCallback(
-    (newViewport) => setViewport(newViewport),
-    []
-  );
+  const handleViewportChange = useCallback((newViewport) => {
+    setViewport(newViewport);
+  }, []);
 
   const handleGeocoderViewportChange = useCallback(
     (newViewport) => {
       const geocoderDefaultOverrides = { transitionDuration: 1000 };
-      console.log({ newViewport });
 
       return handleViewportChange({
         ...newViewport,
@@ -106,9 +92,12 @@ function MapBox({ selectedAddress }) {
     [handleViewportChange]
   );
 
-  const handleOnResult = (event) => {
-    setSearchResult(event.result);
-    setAddress(event.result.place_name);
+  const handleOnResult = (result) => {
+    setSearchResult(result);
+    setAddress(result.place_name);
+    setLongitude(result.geometry.coordinates[0]);
+    setLatitude(result.geometry.coordinates[1]);
+    return result;
   };
 
   const handleAddDestination = (event) => {
@@ -119,22 +108,25 @@ function MapBox({ selectedAddress }) {
     console.log(event.currentTarget);
 
     const addData = {
+      userid: localStorage.getItem("userid"),
       address: address,
       description: data.get("description"),
+      latitude,
+      longitude,
     };
     console.log({ addData });
 
-    const addResponse = addDestination(addData);
+    // const addResponse = addDestination(addData);
 
-    if (addResponse) {
-      toast.success("Your destination has been added!", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-    } else {
-      toast.error("Something went wrong. Could not add.", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-    }
+    // if (addResponse) {
+    //   toast.success("Your destination has been added!", {
+    //     position: toast.POSITION.BOTTOM_RIGHT,
+    //   });
+    // } else {
+    //   toast.error("Something went wrong. Could not add.", {
+    //     position: toast.POSITION.BOTTOM_RIGHT,
+    //   });
+    // }
   };
 
   useEffect(() => {
@@ -148,7 +140,7 @@ function MapBox({ selectedAddress }) {
       <div className={classes.wrapper}>
         <div
           ref={geocoderContainerRef}
-          className=".mapboxgl-ctrl-geocoder--input"
+          // className=".mapboxgl-ctrl-geocoder--input"
         />
         <div>
           {showAddBtn && (
@@ -181,12 +173,45 @@ function MapBox({ selectedAddress }) {
           <Geocoder
             mapRef={mapRef}
             containerRef={geocoderContainerRef}
-            onResult={handleOnResult}
+            // onResult={(result) => handleOnResult(result)}
             placeholder="Search Destination"
             onViewportChange={handleGeocoderViewportChange}
             mapboxApiAccessToken={MAPBOX_TOKEN}
             className="mapboxgl-ctrl-geocoder"
+            hideOnSelect={true}
           />
+          {selectedDestination ? (
+            <Marker
+              latitude={selectedDestination?.latitude}
+              longitude={selectedDestination?.longitude}
+              onClick={() => {
+                setPopupSelect(true);
+              }}
+            >
+              <img
+                // src="https://img.icons8.com/office/2x/marker.png"
+                src={markerImg}
+                width="50"
+                height="50"
+                alt="Selected"
+                style={{ cursor: "pointer" }}
+              />
+            </Marker>
+          ) : null}
+          {popupSelect && (
+            <Popup
+              latitude={selectedDestination?.latitude}
+              longitude={selectedDestination?.longitude}
+              onClose={() => {
+                setPopupSelect(false);
+              }}
+            >
+              <div>
+                <h4>Destination: {selectedDestination?.address}</h4>
+                <p>{selectedDestination?.description}</p>
+              </div>
+            </Popup>
+          )}
         </MapGL>
       </div>
       <Modal

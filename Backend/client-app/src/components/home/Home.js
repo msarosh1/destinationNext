@@ -60,7 +60,9 @@ export default function Home() {
   const classes = useStyles();
   const navigate = useNavigate();
   const [destinations, setDestinations] = useState();
-  const [selectedAddress, setSelectedAddress] = useState();
+  const [selectedDestination, setSelectedDestination] = useState();
+
+  console.log("check home log");
 
   useEffect(() => {
     setDestinations([
@@ -68,39 +70,49 @@ export default function Home() {
         id: 1,
         description: "Planning to go there next summer",
         address: "Wake Forest, North Carolina, United States",
+        latitude: 52.3814597201848,
+        longitude: -0.676181762467007,
       },
       {
         id: 2,
         description: "Description 2",
         address: "Address 2",
+        latitude: 45.539802,
+        longitude: 10.220021,
       },
       {
         id: 3,
         description: "Description 2",
         address: "Address 3",
+        latitude: 52.3814597201848,
+        longitude: -0.676181762467007,
       },
       {
         id: 4,
         description: "Description 1",
         address: "Address 1",
+        latitude: 52.3814597201848,
+        longitude: -0.676181762467007,
       },
       {
         id: 5,
         description: "Description 2",
         address: "Address 2",
+        latitude: 52.3814597201848,
+        longitude: -0.676181762467007,
       },
       {
         id: 6,
         description: "Description 2",
         address: "Address 3",
+        latitude: 52.3814597201848,
+        longitude: -0.676181762467007,
       },
     ]);
   }, []);
 
-  useEffect(() => {}, [selectedAddress]);
-
-  const handleGetAddressCallback = (address) => {
-    setSelectedAddress(address);
+  const handleGetAddressCallback = (destination) => {
+    setSelectedDestination(destination);
   };
 
   return (
@@ -211,9 +223,9 @@ export default function Home() {
                   marginBottom: 0,
                 }}
               >
-                <h3 style={{ marginBottom: 2 }}>Choose your destination</h3>
+                <h3 style={{ marginBottom: 2 }}>Pick your destination</h3>
               </div>
-              <MapBox selectedAddress={selectedAddress} />
+              <MapBox selectedDestination={selectedDestination} />
             </Grid>
           </Grid>
         </Main>
