@@ -6,14 +6,15 @@ const api = axios.create({
 
 export const login = async (loginData) => {
   try {
-    const response = await api.post(`login/`, loginData, {
+    const response = await api.post(`login`, loginData, {
       headers: {
         "Content-type": "application/json",
       },
     });
     if (response) {
       console.log({ response });
-      // save response -> token and userid to localStorage
+
+      // save response -> id to localStorage
       return response.data;
     } else {
       return false;
@@ -26,7 +27,8 @@ export const login = async (loginData) => {
 
 export const signup = async (signupData) => {
   try {
-    const response = await api.post(`signup/`, signupData, {
+    console.log({ signupData });
+    const response = await api.post(`signup`, signupData, {
       headers: {
         "Content-type": "application/json",
       },
@@ -39,6 +41,25 @@ export const signup = async (signupData) => {
     }
   } catch (error) {
     console.log("error in: signup", { error });
+    return false;
+  }
+};
+
+export const logout = async () => {
+  try {
+    const response = await api.get(`dashboard`, {
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    if (response) {
+      console.log({ response });
+      return response.data;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("error in: logout", { error });
     return false;
   }
 };

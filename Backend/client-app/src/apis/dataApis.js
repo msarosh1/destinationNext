@@ -9,7 +9,7 @@ const userid = localStorage.getItem("userid");
 
 export const getDestinations = async () => {
   try {
-    const response = await api.get(`get-destinations/${userid}`, {
+    const response = await api.get(`destinations/${userid}`, {
       headers: {
         Authorization: `Token ${token}`,
         "Content-type": "application/json",
@@ -29,7 +29,7 @@ export const getDestinations = async () => {
 
 export const addDestination = async (destinationData) => {
   try {
-    const response = await api.post(`add-destination/`, destinationData, {
+    const response = await api.post(`destinations/`, destinationData, {
       headers: {
         Authorization: `Token ${token}`,
         "Content-type": "application/json",
@@ -50,7 +50,7 @@ export const addDestination = async (destinationData) => {
 export const updateDestination = async (destinationData) => {
   try {
     const response = await api.put(
-      `update-destination/${destinationData?.id}`,
+      `destinations/${destinationData?.id}`,
       destinationData,
       {
         headers: {

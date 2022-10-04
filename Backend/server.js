@@ -2,6 +2,14 @@ const express = require("express");
 const app = express(); // server software
 const bodyParser = require("body-parser"); // parser middleware
 
+const cors = require("cors");
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -54,13 +62,18 @@ app.get("/", (req, res) => {
 // Route to Login Page
 app.get("/login", (req, res) => {
   console.log("Inside /login");
-  res.send("Logged out");
+  res.json({
+    success: true,
+    message: "Logged out successfully.",
+  });
   // res.sendFile(__dirname + "/static/login.html");
 });
 
 // Route to Dashboard
 app.get("/dashboard", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
-  res.send(`Hello ${req.user.email}. Your session ID is ${req.sessionID}
+  console.log("Dsd", req.session);
+  // res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.send(`Hello. Your session ID is ${req.sessionID}
   and your session expires in ${req.session.cookie.maxAge}
   milliseconds.<br><br>
   <a href="/logout">Log Out</a><br><br><a href="/secret">Members Only</a>`);
@@ -69,6 +82,10 @@ app.get("/dashboard", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
 // Route to Log out
 app.get("/logout", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
   req.logout();
+  res.json({
+    success: true,
+    message: "Logged out successfully.",
+  });
   res.redirect("/login");
 });
 
@@ -79,6 +96,8 @@ app.post("/signup", (req, res) => {
   const lname = req.body.user.lname;
   const email = req.body.user.email;
   const password = req.body.user.password;
+
+  console.log("here ia m");
 
   User.findOne({ username: username })
     .then((user) => {

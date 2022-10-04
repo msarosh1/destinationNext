@@ -25,12 +25,14 @@ export default function Signup() {
     const data = new FormData(event.currentTarget);
 
     const signupData = {
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      email: data.get("email"),
-      password: data.get("password"),
+      user: {
+        fname: data.get("firstName"),
+        lname: data.get("lastName"),
+        email: data.get("email"),
+        password: data.get("password"),
+        username: data.get("username"),
+      },
     };
-    console.log({ signupData });
 
     const signupResponse = signup(signupData);
 
@@ -103,7 +105,7 @@ export default function Signup() {
                       autoComplete="family-name"
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={6}>
                     <TextField
                       required
                       fullWidth
@@ -111,6 +113,15 @@ export default function Signup() {
                       label="Email Address"
                       name="email"
                       autoComplete="email"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="username"
+                      label="Username"
+                      name="username"
                     />
                   </Grid>
                   <Grid item xs={12}>

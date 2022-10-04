@@ -13,6 +13,7 @@ import NearMeIcon from "@mui/icons-material/NearMe";
 import { Grid } from "@mui/material";
 import Destinations from "../destinations/Destinations";
 import { getDestinations } from "../../apis/dataApis";
+import { logout } from "../../apis/authApis";
 import MapBox from "./maps/MapBox";
 
 const Main = styled("main")(({ theme, open }) => ({
@@ -63,6 +64,11 @@ export default function Home() {
   const [selectedDestination, setSelectedDestination] = useState();
 
   console.log("check home log");
+
+  const handleLogout = () => {
+    const logoutRes = logout();
+    console.log({ logoutRes });
+  };
 
   useEffect(() => {
     setDestinations([
@@ -161,10 +167,11 @@ export default function Home() {
               className={classes.logoutBtn}
               sx={{ mt: 2, mb: 2 }}
               onClick={() => {
-                navigate("/");
-                toast.warning("Logged out successfully", {
-                  position: toast.POSITION.BOTTOM_RIGHT,
-                });
+                handleLogout();
+                // navigate("/");
+                // toast.warning("Logged out successfully", {
+                //   position: toast.POSITION.BOTTOM_RIGHT,
+                // });
               }}
             >
               Logout

@@ -25,24 +25,23 @@ export default function Login() {
     const data = new FormData(event.currentTarget);
 
     const loginData = {
-      email: data.get("email"),
+      username: data.get("username"),
       password: data.get("password"),
     };
     console.log({ loginData });
-    navigate("/home");
 
-    // const loginResponse = login(loginData);
+    const loginResponse = login(loginData);
 
-    // if (loginResponse) {
-    //   toast.success("Logged in successfully", {
-    //     position: toast.POSITION.BOTTOM_RIGHT,
-    //   });
-    //   navigate("/home");
-    // } else {
-    //   toast.error("Incorrect credentials", {
-    //     position: toast.POSITION.BOTTOM_RIGHT,
-    //   });
-    // }
+    if (loginResponse) {
+      toast.success("Logged in successfully", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      navigate("/home");
+    } else {
+      toast.error("Incorrect credentials", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    }
   };
 
   useEffect(() => {
@@ -83,10 +82,9 @@ export default function Login() {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="Username"
+                name="username"
                 autoFocus
               />
               <TextField
