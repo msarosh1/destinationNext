@@ -53,40 +53,30 @@ app.use(passport.session());
 // Configuring More Middleware
 const bcrypt = require("bcryptjs");
 
-// Route to Homepage
-app.get("/", (req, res) => {
-  // res.sendFile(__dirname + "/static/index.html");
-  console.log("Inside get /");
-});
-
-// Route to Login Page
-app.get("/login", (req, res) => {
-  console.log("Inside /login");
-  res.json({
-    success: true,
-    message: "Logged out successfully.",
-  });
-  // res.sendFile(__dirname + "/static/login.html");
-});
-
-// Route to Dashboard
-app.get("/dashboard", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
-  console.log("Dsd", req.session);
-  // res.sendFile(path.join(__dirname, "public", "index.html"));
-  res.send(`Hello. Your session ID is ${req.sessionID}
-  and your session expires in ${req.session.cookie.maxAge}
-  milliseconds.<br><br>
-  <a href="/logout">Log Out</a><br><br><a href="/secret">Members Only</a>`);
+// Authentication call
+app.get("/auth", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json({
+      success: true,
+      username: req.user.username,
+      id: req.user.id,
+    });
+  } else {
+    res.json({
+      success: false,
+      username: null,
+      id: null,
+    });
+  }
 });
 
 // Route to Log out
-app.get("/logout", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
+app.get("/logout", (req, res) => {
   req.logout();
   res.json({
     success: true,
     message: "Logged out successfully.",
   });
-  res.redirect("/login");
 });
 
 //Post Route: signup

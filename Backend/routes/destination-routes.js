@@ -3,8 +3,9 @@ const router = express.Router();
 
 const Destination = require("../models/destination"); //Destination Model
 
+//Fetches all destinations against the given username
 router.get("/", (req, res) => {
-  const username = req.body.user.username;
+  const username = req.user.username;
   Destination.find({ username: username }, (err, data) => {
     if (err) {
       res.json({
@@ -21,7 +22,7 @@ router.get("/", (req, res) => {
   });
 });
 
-//to insert an object
+//To insert an object
 router.post("/", (req, res) => {
   const username = req.body.destination.username;
   const address = req.body.destination.address;
@@ -100,7 +101,6 @@ router.put("/", (req, res) => {
         res.json({
           success: true,
           message: "destination updated successfully",
-          destination: data,
         });
       }
     }
