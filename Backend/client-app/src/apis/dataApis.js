@@ -2,16 +2,15 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_SERVER_API,
+  withCredentials: true,
 });
 
-const token = localStorage.getItem("token");
-const userid = localStorage.getItem("userid");
+const userid = localStorage.getItem("id");
 
 export const getDestinations = async () => {
   try {
-    const response = await api.get(`destinations/${userid}`, {
+    const response = await api.get(`destinations/`, {
       headers: {
-        Authorization: `Token ${token}`,
         "Content-type": "application/json",
       },
     });
@@ -31,7 +30,6 @@ export const addDestination = async (destinationData) => {
   try {
     const response = await api.post(`destinations/`, destinationData, {
       headers: {
-        Authorization: `Token ${token}`,
         "Content-type": "application/json",
       },
     });
@@ -49,18 +47,14 @@ export const addDestination = async (destinationData) => {
 
 export const updateDestination = async (destinationData) => {
   try {
-    const response = await api.put(
-      `destinations/${destinationData?.id}`,
-      destinationData,
-      {
-        headers: {
-          Authorization: `Token ${token}`,
-          "Content-type": "application/json",
-        },
-      }
-    );
+    const response = await api.put(`destinations/`, destinationData, {
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
     if (response) {
       console.log({ response });
+      // localStorage.setItem("update", true);
       return response.data;
     } else {
       return false;
@@ -71,26 +65,19 @@ export const updateDestination = async (destinationData) => {
   }
 };
 
-export const deleteDestination = async (destinationData) => {
+export const removeDestination = async (destinationData) => {
   try {
-    const response = await api.delete(
-      `delete-destination/${destinationData?.id}`,
-      destinationData,
-      {
-        headers: {
-          Authorization: `Token ${token}`,
-          "Content-type": "application/json",
-        },
-      }
-    );
+    console.log("api", destinationData);
+    const response = await api.delete(`destinations/?id=${destinationData}`);
     if (response) {
       console.log({ response });
+      // localStorage.setItem("delete", true);
       return response.data;
     } else {
       return false;
     }
   } catch (error) {
-    console.log("error in: addDestination", { error });
+    console.log("error in: deleteDestination", { error });
     return false;
   }
 };

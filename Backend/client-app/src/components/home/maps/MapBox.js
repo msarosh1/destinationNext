@@ -5,6 +5,7 @@ import { makeStyles } from "@mui/styles";
 import Button from "@mui/material/Button";
 import MapGL, { Marker, Popup } from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
+
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -32,12 +33,12 @@ const modalStyle = {
 
 const useStyles = makeStyles(() => ({
   wrapper: {
-    padding: "30px 0px 35px 0px",
+    padding: "30px 0px 25px 0px",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "100vh",
+    // width: "100vh",
 
     // border: "1px solid black",
   },
@@ -56,6 +57,7 @@ function MapBox({ selectedDestination }) {
 
   const mapRef = useRef();
   const geocoderContainerRef = useRef();
+
   const [searchResult, setSearchResult] = useState();
   const [popupSelect, setPopupSelect] = useState(false);
 
@@ -65,7 +67,7 @@ function MapBox({ selectedDestination }) {
   const [showAddBtn, setShowAddBtn] = useState(false);
 
   useEffect(() => {
-    console.log({ selectedDestination });
+    console.log("Mapbox", { selectedDestination });
     if (selectedDestination) {
       setViewport({
         latitude: selectedDestination?.latitude,
@@ -92,15 +94,16 @@ function MapBox({ selectedDestination }) {
     [handleViewportChange]
   );
 
-  const handleOnResult = (result) => {
-    setSearchResult(result);
-    setAddress(result.place_name);
-    setLongitude(result.geometry.coordinates[0]);
-    setLatitude(result.geometry.coordinates[1]);
-    return result;
+  const handleOnResult = async (event) => {
+    console.log(event);
+    setSearchResult(event?.result);
+
+    setAddress(event?.result?.place_name);
+    setLongitude(event?.result?.geometry?.coordinates[0]);
+    setLatitude(event?.result?.geometry?.coordinates[1]);
   };
 
-  const handleAddDestination = (event) => {
+  const handleAddDestination = async (event) => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
@@ -108,25 +111,27 @@ function MapBox({ selectedDestination }) {
     console.log(event.currentTarget);
 
     const addData = {
-      userid: localStorage.getItem("userid"),
-      address: address,
-      description: data.get("description"),
-      latitude,
-      longitude,
+      destination: {
+        username: localStorage.getItem("username"),
+        address: address,
+        description: data.get("description"),
+        latitude,
+        longitude,
+      },
     };
     console.log({ addData });
 
-    // const addResponse = addDestination(addData);
+    const addResponse = await addDestination(addData);
 
-    // if (addResponse) {
-    //   toast.success("Your destination has been added!", {
-    //     position: toast.POSITION.BOTTOM_RIGHT,
-    //   });
-    // } else {
-    //   toast.error("Something went wrong. Could not add.", {
-    //     position: toast.POSITION.BOTTOM_RIGHT,
-    //   });
-    // }
+    if (addResponse) {
+      toast.success("Your destination has been added!", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    } else {
+      toast.error("Something went wrong. Could not add.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    }
   };
 
   useEffect(() => {
@@ -146,7 +151,6 @@ function MapBox({ selectedDestination }) {
           {showAddBtn && (
             <Button
               variant="contained"
-              sx={{ mt: 2, mb: 2 }}
               style={{ backgroundColor: "#00489E" }}
               onClick={() => setModalIsOpen(true)}
             >
@@ -173,13 +177,30 @@ function MapBox({ selectedDestination }) {
           <Geocoder
             mapRef={mapRef}
             containerRef={geocoderContainerRef}
-            // onResult={(result) => handleOnResult(result)}
+            onResult={handleOnResult}
             placeholder="Search Destination"
             onViewportChange={handleGeocoderViewportChange}
             mapboxApiAccessToken={MAPBOX_TOKEN}
             className="mapboxgl-ctrl-geocoder"
             hideOnSelect={true}
           />
+          {searchResult ? (
+            <Marker
+              latitude={latitude}
+              longitude={longitude}
+              // onClick={() =>
+              //   selectedDestination ? setPopupSelect(true) : null
+              // }
+            >
+              <img
+                src={markerImg}
+                width="50"
+                height="50"
+                alt="Selected"
+                style={{ cursor: "pointer" }}
+              />
+            </Marker>
+          ) : null}
           {selectedDestination ? (
             <Marker
               latitude={selectedDestination?.latitude}
@@ -189,7 +210,6 @@ function MapBox({ selectedDestination }) {
               }}
             >
               <img
-                // src="https://img.icons8.com/office/2x/marker.png"
                 src={markerImg}
                 width="50"
                 height="50"
@@ -200,8 +220,8 @@ function MapBox({ selectedDestination }) {
           ) : null}
           {popupSelect && (
             <Popup
-              latitude={selectedDestination?.latitude}
-              longitude={selectedDestination?.longitude}
+              latitude={selectedDestination?.latitude || latitude}
+              longitude={selectedDestination?.longitude || longitude}
               onClose={() => {
                 setPopupSelect(false);
               }}

@@ -5,7 +5,8 @@ const Destination = require("../models/destination"); //Destination Model
 
 //Fetches all destinations against the given username
 router.get("/", (req, res) => {
-  const username = req.user.username;
+  const username = req.query.username;
+  console.log("sndfk", username);
   Destination.find({ username: username }, (err, data) => {
     if (err) {
       res.json({
@@ -109,7 +110,8 @@ router.put("/", (req, res) => {
 
 //delete a destination item
 router.delete("/", (req, res) => {
-  const id = req.body.destination._id;
+  const id = req.query.id;
+
   const filter = { _id: id };
 
   Destination.findOneAndDelete(filter, (err, doc) => {
