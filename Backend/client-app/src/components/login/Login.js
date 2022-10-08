@@ -20,7 +20,7 @@ const theme = createTheme();
 export default function Login() {
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
@@ -30,13 +30,17 @@ export default function Login() {
     };
     console.log({ loginData });
 
-    const loginResponse = login(loginData);
+    const loginResponse = await login(loginData);
 
-    if (loginResponse) {
+    const isAuth = localStorage.getItem("isLoggedin");
+
+    console.log({ isAuth });
+
+    if (loginResponse && (isAuth === true || isAuth === "true")) {
+      navigate("/home");
       toast.success("Logged in successfully", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
-      navigate("/home");
     } else {
       toast.error("Incorrect credentials", {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -45,8 +49,8 @@ export default function Login() {
   };
 
   useEffect(() => {
-    const isAlreadyLoggedIn = localStorage.getItem("token");
-    if (isAlreadyLoggedIn) {
+    const isAlreadyLoggedIn = localStorage.getItem("isLoggedin");
+    if (isAlreadyLoggedIn === true || isAlreadyLoggedIn === "true") {
       navigate("/home");
     }
   }, []);

@@ -11,8 +11,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { makeStyles } from "@mui/styles";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import { updateDestination, deleteDestination } from "../../apis/dataApis";
+import { updateDestination, removeDestination } from "../../apis/dataApis";
+
 import { toast } from "react-toastify";
+import Popover from "@mui/material/Popover";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { red } from "@mui/material/colors";
 
 const modalStyle = {
   position: "absolute",
@@ -40,14 +44,6 @@ const useStyles = makeStyles(() => ({
       border: "1px solid #E8F0FE !important",
     },
   },
-  rectangle: {
-    boxSizing: "border-box",
-    height: 0.5,
-    background: "#C1BDB5",
-    border: "0.2px solid rgba(0, 0, 0, 0.1)",
-    borderRadius: "3px",
-    marginBottom: 2,
-  },
   scrollbar: {
     "&::-webkit-scrollbar": {
       width: "0.3em",
@@ -71,11 +67,28 @@ const useStyles = makeStyles(() => ({
 
 function Destinations({ destinations, handleGetAddressCallback }) {
   const classes = useStyles();
-  const [isHover, setIsHover] = useState(false);
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editDestination, setEditDestination] = useState();
   const [deleteDestination, setDeleteDestination] = useState();
+
+  // popover
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  // popover end
 
   const handleEditDestination = (event) => {
     event.preventDefault();
@@ -85,9 +98,14 @@ function Destinations({ destinations, handleGetAddressCallback }) {
     console.log(event.currentTarget);
 
     const editData = {
-      id: editDestination?.id,
-      address: editDestination?.address,
-      description: data.get("description"),
+      destination: {
+        _id: editDestination?._id,
+        username: localStorage.getItem("username"),
+        address: editDestination?.address,
+        description: data.get("description"),
+        latitude: editDestination?.latitude,
+        longitude: editDestination?.longitude,
+      },
     };
     console.log({ editData });
 
@@ -104,8 +122,11 @@ function Destinations({ destinations, handleGetAddressCallback }) {
     }
   };
 
-  const handleDeleteDestination = (destination) => {
-    const deleteResponse = deleteDestination(destination);
+  const handleDeleteDestination = () => {
+    const destinationData = deleteDestination?._id;
+
+    console.log({ destinationData });
+    const deleteResponse = removeDestination(destinationData);
 
     if (deleteResponse) {
       toast.success("Your destination has been deleted!", {
@@ -118,18 +139,20 @@ function Destinations({ destinations, handleGetAddressCallback }) {
     }
   };
 
-  const handleAutomaticMapHover = (selectedDestination) => {
-    console.log({ selectedDestination });
-    handleGetAddressCallback(selectedDestination);
+  const handleAutomaticMapHover = (destination) => {
+    console.log("Destinations page", { destination });
+    setEditDestination(destination);
+    setDeleteDestination(destination);
+    handleGetAddressCallback(destination);
   };
 
   return (
     <>
       <Grid
         justifyContent="flex-start"
-        spacing={2}
+        // spacing={2}
         className={classes.scrollbar}
-        style={{ maxHeight: "calc(100vh - 240px)", overflow: "auto" }}
+        style={{ maxHeight: "calc(100vh - 270px)", overflow: "auto" }}
       >
         {destinations?.map((destination, index) => (
           <Card
@@ -140,12 +163,83 @@ function Destinations({ destinations, handleGetAddressCallback }) {
               overflow: "hidden",
             }}
             className={classes.card}
-            // onMouseOver={() => setIsHover(true)}
-            // onMouseOut={() => setIsHover(false)}
             onClick={() => handleAutomaticMapHover(destination)}
             key={index}
             sx={{ minWidth: 275, marginBottom: 3 }}
           >
+            <Box
+              style={
+                index % 2 === 0
+                  ? { height: 13, background: "#a0cbff" }
+                  : { height: 13, background: "#696969" }
+              }
+            >
+              {/* <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <p></p>
+                <MoreHorizIcon
+                  onClick={handleClick}
+                  aria-describedby={id}
+                  sx={{ fontSize: 27 }}
+                  style={
+                    index % 2 !== 0
+                      ? {
+                          color: "white",
+                          marginTop: -7,
+                          cursor: "pointer",
+                        }
+                      : { cursor: "pointer", marginTop: -7 }
+                  }
+                />
+              </div> */}
+              {/* <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    padding: "10px 15px",
+                  }}
+                >
+                  <Button
+                    variant="outlined"
+                    style={{
+                      marginBottom: 8,
+                      border: "1px solid #696969",
+                      color: "#696969",
+                    }}
+                    onClick={() => {
+                      setModalIsOpen(true);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    style={{ border: "1px solid red", color: "red" }}
+                    className={classes.deleteBtn}
+                    onClick={() => {
+                      setDeleteModalOpen(true);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </Popover> */}
+            </Box>
             <CardContent style={{ padding: "8px 8px 16px" }}>
               <Typography
                 sx={{ fontSize: 14, paddingLeft: "8px" }}
@@ -192,7 +286,6 @@ function Destinations({ destinations, handleGetAddressCallback }) {
                 />
               </div>
             </CardContent>
-            {/* <div className={classes.rectangle}></div> */}
           </Card>
         ))}
       </Grid>
@@ -298,8 +391,9 @@ function Destinations({ destinations, handleGetAddressCallback }) {
               style={{
                 fontWeight: 500,
                 border: "1px solid red",
+                color: "red",
               }}
-              onClick={() => handleDeleteDestination}
+              onClick={() => handleDeleteDestination()}
             >
               Yes
             </Button>

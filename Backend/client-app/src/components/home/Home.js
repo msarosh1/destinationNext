@@ -12,9 +12,15 @@ import { toast } from "react-toastify";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import { Grid } from "@mui/material";
 import Destinations from "../destinations/Destinations";
-import { getDestinations } from "../../apis/dataApis";
-import { logout } from "../../apis/authApis";
+
+import { checkAuth, logout } from "../../apis/authApis";
 import MapBox from "./maps/MapBox";
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: process.env.REACT_APP_SERVER_API,
+  withCredentials: true,
+});
 
 const Main = styled("main")(({ theme, open }) => ({
   flexGrow: 1,
@@ -65,59 +71,78 @@ export default function Home() {
 
   console.log("check home log");
 
-  const handleLogout = () => {
-    const logoutRes = logout();
-    console.log({ logoutRes });
+  const handleLogout = async () => {
+    localStorage.removeItem("isLoggedin");
+    localStorage.removeItem("id");
+    localStorage.removeItem("username");
+
+    // const logoutRes = await logout();
+
+    navigate("/");
   };
 
+  // useEffect(() => {
+  //   if (
+  //     localStorage.getItem("isLoggedin") === "true" ||
+  //     localStorage.getItem("isLoggedin") === true
+  //   ) {
+  //     const checkAuthentication = checkAuth();
+
+  //     if (checkAuthentication) {
+  //       console.log("what", localStorage.getItem("username"));
+  //     }
+  //   }
+  // }, []);
+
   useEffect(() => {
-    setDestinations([
-      {
-        id: 1,
-        description: "Planning to go there next summer",
-        address: "Wake Forest, North Carolina, United States",
-        latitude: 52.3814597201848,
-        longitude: -0.676181762467007,
-      },
-      {
-        id: 2,
-        description: "Description 2",
-        address: "Address 2",
-        latitude: 45.539802,
-        longitude: 10.220021,
-      },
-      {
-        id: 3,
-        description: "Description 2",
-        address: "Address 3",
-        latitude: 52.3814597201848,
-        longitude: -0.676181762467007,
-      },
-      {
-        id: 4,
-        description: "Description 1",
-        address: "Address 1",
-        latitude: 52.3814597201848,
-        longitude: -0.676181762467007,
-      },
-      {
-        id: 5,
-        description: "Description 2",
-        address: "Address 2",
-        latitude: 52.3814597201848,
-        longitude: -0.676181762467007,
-      },
-      {
-        id: 6,
-        description: "Description 2",
-        address: "Address 3",
-        latitude: 52.3814597201848,
-        longitude: -0.676181762467007,
-      },
-    ]);
+    const isAuthenticated = localStorage.getItem("isLoggedin");
+
+    console.log({ isAuthenticated });
+    if (isAuthenticated === "false" || !isAuthenticated) {
+      navigate("/");
+    }
   }, []);
 
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      try {
+        console.log("fetch", localStorage.getItem("username"));
+        const response = await api.get(
+          `destinations/?username=${localStorage.getItem("username")}`,
+          {
+            headers: {
+              "Content-type": "application/json",
+            },
+          }
+        );
+        if (response) {
+          console.log({ response });
+          setDestinations(response?.data?.destinations);
+          return response.data;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        console.log("error in: getDestinations", { error });
+        return false;
+      }
+    };
+
+    if (
+      localStorage.getItem("username")
+      // localStorage.getItem("update") ||
+      // localStorage.getItem("delete")
+    ) {
+      fetchDestinations();
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("");
+  }, [destinations]);
+
   const handleGetAddressCallback = (destination) => {
+    console.log("Home -  selected", destination);
     setSelectedDestination(destination);
   };
 
@@ -199,11 +224,18 @@ export default function Home() {
                     color: "#014493",
                     borderBottom: "1px solid #00498E",
                     paddingBottom: 0,
+                    marginBottom: 18,
                   }}
                 >
                   <h3 style={{ marginBottom: 3 }}>Your list</h3>
                 </div>
-                <span style={{ display: "flex", justifyContent: "flex-end" }}>
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    marginBottom: 20,
+                  }}
+                >
                   {" "}
                   <h6 className={classes.heading}>
                     <span style={{ fontSize: 24, color: "#00489E" }}>
@@ -230,7 +262,7 @@ export default function Home() {
                   marginBottom: 0,
                 }}
               >
-                <h3 style={{ marginBottom: 2 }}>Pick your destination</h3>
+                <h3 style={{ marginBottom: 3 }}>Pick your destination</h3>
               </div>
               <MapBox selectedDestination={selectedDestination} />
             </Grid>

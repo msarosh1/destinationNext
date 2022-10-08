@@ -15,7 +15,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const session = require("express-session"); // session middleware
 const passport = require("passport");
-const connectEnsureLogin = require("connect-ensure-login"); // authorization
 
 require("./passport")(passport);
 
@@ -50,18 +49,23 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// added for req.isAuthenticated
+app.set("trust proxy", 1);
+
 // Configuring More Middleware
 const bcrypt = require("bcryptjs");
 
 // Authentication call
 app.get("/auth", (req, res) => {
   if (req.isAuthenticated()) {
+    console.log("check auth: ", req.isAuthenticated());
     res.json({
       success: true,
       username: req.user.username,
       id: req.user.id,
     });
   } else {
+    console.log("check auth: ", req.isAuthenticated());
     res.json({
       success: false,
       username: null,
@@ -155,6 +159,7 @@ app.post("/login", (req, res, next) => {
       return res.json({
         success: true,
         message: "login successful",
+        user: user,
       });
     });
   })(req, res, next);
