@@ -27,7 +27,7 @@ const port = process.env.port || 5000;
 //for environment vars
 require("dotenv").config();
 
-mongoose.connect(process.env.MONGO_CONN_STRING, {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
