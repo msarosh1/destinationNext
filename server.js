@@ -24,13 +24,13 @@ const mongoose = require("mongoose");
 
 const port = process.env.port || 5000;
 
-mongoose.connect(
-  "mongodb+srv://admin:admin@cluster0.ank7gsi.mongodb.net/?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+//for environment vars
+require("dotenv").config();
+
+mongoose.connect(process.env.MONGO_CONN_STRING, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 //passport local strategy
 const LocalStrategy = require("passport-local").Strategy;
