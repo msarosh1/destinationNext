@@ -1,32 +1,69 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server && (cd client-app && npm install)",
-    "dev": "nodemon server"
-  },
-  "author": "",
-  "license": "ISC",
+  "name": "destination-next-app",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "bcrypt": "^5.0.1",
-    "bcryptjs": "^2.4.3",
-    "connect-ensure-login": "^0.1.1",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.1",
-    "express-session": "^1.17.3",
-    "http-errors": "^2.0.0",
-    "mongoose": "^6.6.4",
-    "morgan": "^1.10.0",
-    "passport": "^0.6.0",
-    "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^7.1.2"
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/icons-material": "^5.10.6",
+    "@mui/material": "^5.10.5",
+    "@mui/private-theming": "^5.10.6",
+    "@mui/styled-engine-sc": "^5.10.3",
+    "@mui/styles": "^5.10.8",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "http": "0.0.1-security",
+    "https": "^1.0.0",
+    "mapbox-gl": "^2.10.0",
+    "querystring": "^0.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-map-gl": "^6.1.19",
+    "react-map-gl-geocoder": "^2.2.0",
+    "react-mapbox-gl": "^5.1.1",
+    "react-mapbox-gl-geocoder": "^1.1.0",
+    "react-router-dom": "^6.4.0",
+    "react-scripts": "5.0.1",
+    "react-toastify": "^9.0.8",
+    "styled-components": "^5.3.5",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start-client": "react-app-rewired start",
+    "build": "react-app-rewired build && (cd Backend && npm install)",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject",
+    "start": "cd Backend && npm start"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "assert": "^2.0.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "url": "^0.11.0"
   }
 }
