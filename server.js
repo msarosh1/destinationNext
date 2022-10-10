@@ -22,7 +22,7 @@ const User = require("./models/user"); // User Model
 
 const mongoose = require("mongoose");
 
-const port = process.env.port || 5000;
+const port = process.env.PORT || 5000;
 
 //for environment vars
 require("dotenv").config();
