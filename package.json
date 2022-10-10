@@ -31,7 +31,7 @@
   },
   "scripts": {
     "start-client": "react-app-rewired start",
-    "build": "react-app-rewired build && (cd Backend && npm install)",
+    "build": "react-app-rewired build --force && (cd Backend && npm install)",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "start": "cd Backend && npm start"
