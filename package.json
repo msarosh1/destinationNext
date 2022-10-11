@@ -31,11 +31,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start-client": "react-app-rewired start",
-    "build": "react-app-rewired build && (cd Backend && npm install)",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build && (cd Backend && npm install && npm start)",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
-    "start": "cd Backend && npm start"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
