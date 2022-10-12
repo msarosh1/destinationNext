@@ -8,12 +8,10 @@ import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { toast } from "react-toastify";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import { Grid } from "@mui/material";
 import Destinations from "../destinations/Destinations";
 
-import { checkAuth, logout } from "../../apis/authApis";
 import MapBox from "./maps/MapBox";
 import axios from "axios";
 
@@ -101,6 +99,7 @@ export default function Home() {
     if (isAuthenticated === "false" || !isAuthenticated) {
       navigate("/");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

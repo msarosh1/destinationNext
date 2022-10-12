@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Grid } from "@mui/material";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -14,9 +13,6 @@ import TextField from "@mui/material/TextField";
 import { updateDestination, removeDestination } from "../../apis/dataApis";
 
 import { toast } from "react-toastify";
-import Popover from "@mui/material/Popover";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { red } from "@mui/material/colors";
 
 const modalStyle = {
   position: "absolute",
@@ -77,16 +73,7 @@ function Destinations({ destinations, handleGetAddressCallback }) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
 
   // popover end
 

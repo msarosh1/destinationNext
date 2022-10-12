@@ -53,6 +53,7 @@ export default function Login() {
     if (isAlreadyLoggedIn === true || isAlreadyLoggedIn === "true") {
       navigate("/home");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
