@@ -9,7 +9,7 @@ export const login = async (loginData) => {
   try {
     const response = await api.post(`login`, loginData, {
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
       },
     });
     if (response) {
@@ -32,7 +32,7 @@ export const signup = async (signupData) => {
     console.log({ signupData });
     const response = await api.post(`signup`, signupData, {
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
       },
     });
     if (response) {
@@ -51,7 +51,7 @@ export const logout = async () => {
   try {
     const response = await api.get(`logout`, {
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
       },
     });
     if (response) {

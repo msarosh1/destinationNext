@@ -11,7 +11,7 @@ export const getDestinations = async () => {
   try {
     const response = await api.get(`destinations/`, {
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
       },
     });
     if (response) {
@@ -30,7 +30,7 @@ export const addDestination = async (destinationData) => {
   try {
     const response = await api.post(`destinations/`, destinationData, {
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
       },
     });
     if (response) {
@@ -49,7 +49,7 @@ export const updateDestination = async (destinationData) => {
   try {
     const response = await api.put(`destinations/`, destinationData, {
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
       },
     });
     if (response) {
