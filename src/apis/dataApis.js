@@ -5,8 +5,6 @@ const api = axios.create({
   withCredentials: true,
 });
 
-const userid = localStorage.getItem("id");
-
 export const getDestinations = async () => {
   try {
     const response = await api.get(`destinations/`, {
