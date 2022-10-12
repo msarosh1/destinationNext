@@ -42,7 +42,6 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "start:server": "cd Backend && npm start",
     "build": "react-app-rewired build && (cd Backend && npm install)",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
