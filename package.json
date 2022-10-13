@@ -49,7 +49,7 @@
     "build": "react-app-rewired build && (cd Backend && npm install)",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "start": "cd Backend & npm start"
+    "start": "cd Backend && npm start"
   },
   "eslintConfig": {
     "extends": [
