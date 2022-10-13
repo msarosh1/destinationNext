@@ -45,11 +45,11 @@
     "url": "^0.11.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "start-server": "cd Backend && npm start",
+    "start-client": "react-app-rewired start",
     "build": "react-app-rewired build && (cd Backend && npm install)",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start": "cd Backend & npm start"
   },
   "eslintConfig": {
     "extends": [
