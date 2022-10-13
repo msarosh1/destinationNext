@@ -2,6 +2,10 @@
   "name": "destination-next-app",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "16.0.0",
+    "npm": "8.19.2"
+  },
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
@@ -42,7 +46,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build && (cd Backend && npm install)",
+    "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
