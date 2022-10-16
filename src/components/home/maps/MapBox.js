@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import "!mapbox-gl/dist/mapbox-gl.css";
+import "mapbox-gl/dist/mapbox-gl.css";
 import React, { useState, useRef, useCallback, useEffect } from "react";
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import "!react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
