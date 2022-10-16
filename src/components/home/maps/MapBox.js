@@ -5,7 +5,8 @@ import { makeStyles } from "@mui/styles";
 import Button from "@mui/material/Button";
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapGL, { Marker, Popup } from "!react-map-gl";
-import Geocoder from "react-map-gl-geocoder";
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import Geocoder from "!react-map-gl-geocoder";
 
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
