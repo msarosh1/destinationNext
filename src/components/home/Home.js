@@ -106,7 +106,7 @@ export default function Home() {
       try {
         console.log("fetch", localStorage.getItem("username"));
         const response = await api.get(
-          `destinations`,
+          `destinations/`,
           localStorage.getItem("username"),
           {
             headers: {
