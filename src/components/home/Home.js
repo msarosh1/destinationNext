@@ -16,7 +16,6 @@ import MapBox from "./maps/MapBox";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_API,
   withCredentials: true,
 });
 
