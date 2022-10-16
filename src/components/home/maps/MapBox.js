@@ -1,6 +1,8 @@
-import "mapbox-gl/dist/mapbox-gl.css";
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import "!mapbox-gl/dist/mapbox-gl.css";
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import "!react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import { makeStyles } from "@mui/styles";
 import Button from "@mui/material/Button";
 // eslint-disable-next-line import/no-webpack-loader-syntax
