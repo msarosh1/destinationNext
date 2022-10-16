@@ -3,10 +3,8 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import { makeStyles } from "@mui/styles";
 import Button from "@mui/material/Button";
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import MapGL, { Marker, Popup } from "!react-map-gl";
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import Geocoder from "!react-map-gl-geocoder";
+import MapGL, { Marker, Popup } from "react-map-gl";
+import Geocoder from "react-map-gl-geocoder";
 
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
