@@ -5,6 +5,7 @@ const Destination = require("../models/destination"); //Destination Model
 
 //Fetches all destinations against the given username
 router.get("/", (req, res) => {
+  console.log(req);
   const username = req.query.username;
   console.log("sndfk", username);
   Destination.find({ username: username }, (err, data) => {
