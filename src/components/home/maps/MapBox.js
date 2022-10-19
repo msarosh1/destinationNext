@@ -73,7 +73,6 @@ function MapBox({ selectedDestination }) {
         latitude: selectedDestination?.latitude,
         longitude: selectedDestination?.longitude,
         zoom: 10,
-        transitionDuration: 1000,
       });
     }
   }, [selectedDestination]);
@@ -84,11 +83,8 @@ function MapBox({ selectedDestination }) {
 
   const handleGeocoderViewportChange = useCallback(
     (newViewport) => {
-      const geocoderDefaultOverrides = { transitionDuration: 1000 };
-
       return handleViewportChange({
         ...newViewport,
-        ...geocoderDefaultOverrides,
       });
     },
     [handleViewportChange]

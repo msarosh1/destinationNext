@@ -136,13 +136,19 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if (selectedDestination) {
+      console.log({ selectedDestination });
+    }
+  }, [selectedDestination]);
+
+  useEffect(() => {
     console.log("");
   }, [destinations]);
 
-  const handleGetAddressCallback = (destination) => {
-    console.log("Home -  selected", destination);
-    setSelectedDestination(destination);
-  };
+  // const handleGetAddressCallback = (destination) => {
+  //   console.log("Home -  selected", destination);
+  //   setSelectedDestination(destination);
+  // };
 
   return (
     <>
@@ -245,7 +251,7 @@ export default function Home() {
 
                 <Destinations
                   destinations={destinations}
-                  handleGetAddressCallback={handleGetAddressCallback}
+                  setSelectedDestination={setSelectedDestination}
                 />
               </Grid>
             ) : null}

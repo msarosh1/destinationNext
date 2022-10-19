@@ -61,7 +61,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function Destinations({ destinations, handleGetAddressCallback }) {
+function Destinations({ destinations, setSelectedDestination }) {
   const classes = useStyles();
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -130,7 +130,7 @@ function Destinations({ destinations, handleGetAddressCallback }) {
     console.log("Destinations page", { destination });
     setEditDestination(destination);
     setDeleteDestination(destination);
-    handleGetAddressCallback(destination);
+    setSelectedDestination(destination);
   };
 
   return (
@@ -160,73 +160,7 @@ function Destinations({ destinations, handleGetAddressCallback }) {
                   ? { height: 13, background: "#a0cbff" }
                   : { height: 13, background: "#696969" }
               }
-            >
-              {/* <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <p></p>
-                <MoreHorizIcon
-                  onClick={handleClick}
-                  aria-describedby={id}
-                  sx={{ fontSize: 27 }}
-                  style={
-                    index % 2 !== 0
-                      ? {
-                          color: "white",
-                          marginTop: -7,
-                          cursor: "pointer",
-                        }
-                      : { cursor: "pointer", marginTop: -7 }
-                  }
-                />
-              </div> */}
-              {/* <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    padding: "10px 15px",
-                  }}
-                >
-                  <Button
-                    variant="outlined"
-                    style={{
-                      marginBottom: 8,
-                      border: "1px solid #696969",
-                      color: "#696969",
-                    }}
-                    onClick={() => {
-                      setModalIsOpen(true);
-                    }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    style={{ border: "1px solid red", color: "red" }}
-                    className={classes.deleteBtn}
-                    onClick={() => {
-                      setDeleteModalOpen(true);
-                    }}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </Popover> */}
-            </Box>
+            ></Box>
             <CardContent style={{ padding: "8px 8px 16px" }}>
               <Typography
                 sx={{ fontSize: 14, paddingLeft: "8px" }}
