@@ -58,10 +58,9 @@ app.set("trust proxy", 1);
 // Configuring More Middleware
 const bcrypt = require("bcryptjs");
 
-// // Unrecognized Path
-// app.get("*", (req, res) => {
-//   res.send("Error 404: Page not found!");
-// });
+app.get("/home", (req, res) => {
+  res.redirect("/");
+});
 
 // Authentication call
 app.get("/auth", (req, res) => {
