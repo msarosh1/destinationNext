@@ -58,10 +58,6 @@ app.set("trust proxy", 1);
 // Configuring More Middleware
 const bcrypt = require("bcryptjs");
 
-app.get("/home", (req, res) => {
-  res.redirect("/");
-});
-
 // Authentication call
 app.get("/auth", (req, res) => {
   if (req.isAuthenticated()) {
@@ -173,6 +169,10 @@ app.post("/login", (req, res, next) => {
 });
 
 app.use("/destinations", require("./routes/destination-routes"));
+
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "../build", "index.html"));
+});
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
