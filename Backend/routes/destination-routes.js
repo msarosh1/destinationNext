@@ -52,6 +52,7 @@ router.post("/", (req, res) => {
           res.json({
             success: true,
             message: "Destination added successfully.",
+            data: destination,
           });
         })
         .catch((err) => {
@@ -64,6 +65,7 @@ router.post("/", (req, res) => {
       res.json({
         success: false,
         message: "A destination with the same coordinates already exists",
+        description: "repeat",
       });
     }
   });
@@ -103,6 +105,7 @@ router.put("/", (req, res) => {
         res.json({
           success: true,
           message: "destination updated successfully",
+          data: data,
         });
       }
     }
@@ -125,7 +128,7 @@ router.delete("/", (req, res) => {
       res.json({
         success: true,
         message: "destination deleted successfully",
-        destination: doc,
+        data: doc,
       });
     }
   });

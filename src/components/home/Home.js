@@ -36,13 +36,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const useStyles = makeStyles(() => ({
-  // mapWrapper: {
-  //   display: "flex",
-  //   justifyContent: "center",
-  //   flexDirection: "column",
-  //   alignItems: "center",
-  // },
-
   heading: {
     color: "#9F9C9B",
     fontSize: 15,
@@ -77,19 +70,6 @@ export default function Home() {
 
     navigate("/");
   };
-
-  // useEffect(() => {
-  //   if (
-  //     localStorage.getItem("isLoggedin") === "true" ||
-  //     localStorage.getItem("isLoggedin") === true
-  //   ) {
-  //     const checkAuthentication = checkAuth();
-
-  //     if (checkAuthentication) {
-  //       console.log("what", localStorage.getItem("username"));
-  //     }
-  //   }
-  // }, []);
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem("isLoggedin");
@@ -126,11 +106,7 @@ export default function Home() {
       }
     };
 
-    if (
-      localStorage.getItem("username")
-      // localStorage.getItem("update") ||
-      // localStorage.getItem("delete")
-    ) {
+    if (localStorage.getItem("username")) {
       fetchDestinations();
     }
   }, []);
@@ -251,6 +227,7 @@ export default function Home() {
 
                 <Destinations
                   destinations={destinations}
+                  setDestinations={setDestinations}
                   setSelectedDestination={setSelectedDestination}
                 />
               </Grid>
@@ -268,7 +245,10 @@ export default function Home() {
               >
                 <h3 style={{ marginBottom: 3 }}>Pick your destination</h3>
               </div>
-              <MapBox selectedDestination={selectedDestination} />
+              <MapBox
+                selectedDestination={selectedDestination}
+                setDestinations={setDestinations}
+              />
             </Grid>
           </Grid>
         </Main>

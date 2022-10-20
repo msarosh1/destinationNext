@@ -20,7 +20,7 @@ const theme = createTheme();
 export default function Signup() {
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
@@ -34,9 +34,9 @@ export default function Signup() {
       },
     };
 
-    const signupResponse = signup(signupData);
+    const signupResponse = await signup(signupData);
 
-    if (signupResponse) {
+    if (signupResponse?.success) {
       toast.success("Signed up successfully", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });

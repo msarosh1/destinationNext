@@ -61,7 +61,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function Destinations({ destinations, setSelectedDestination }) {
+function Destinations({
+  destinations,
+  setSelectedDestination,
+  setDestinations,
+}) {
   const classes = useStyles();
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -77,7 +81,7 @@ function Destinations({ destinations, setSelectedDestination }) {
 
   // popover end
 
-  const handleEditDestination = (event) => {
+  const handleEditDestination = async (event) => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
@@ -96,9 +100,22 @@ function Destinations({ destinations, setSelectedDestination }) {
     };
     console.log({ editData });
 
-    const editResponse = updateDestination(editData);
+    const editResponse = await updateDestination(editData);
+    console.log({ destinations, editResponse });
 
-    if (editResponse) {
+    if (editResponse?.success) {
+      const newData = [...destinations];
+
+      const index = newData.findIndex(
+        (obj) => obj._id === editResponse?.data?._id
+      );
+
+      newData[index] = editResponse?.data;
+      console.log({ newData });
+      setDestinations(newData);
+
+      setModalIsOpen(false);
+
       toast.success("Your destination has been updated!", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
@@ -109,13 +126,20 @@ function Destinations({ destinations, setSelectedDestination }) {
     }
   };
 
-  const handleDeleteDestination = () => {
+  const handleDeleteDestination = async () => {
     const destinationData = deleteDestination?._id;
 
     console.log({ destinationData });
-    const deleteResponse = removeDestination(destinationData);
+    const deleteResponse = await removeDestination(destinationData);
 
-    if (deleteResponse) {
+    if (deleteResponse?.success) {
+      const newData = destinations.filter(
+        (destination) => destination?._id !== deleteResponse?.data?._id
+      );
+      setDestinations(newData);
+
+      setDeleteModalOpen(false);
+
       toast.success("Your destination has been deleted!", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });

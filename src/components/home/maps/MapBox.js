@@ -44,7 +44,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function MapBox({ selectedDestination }) {
+function MapBox({ selectedDestination, setDestinations }) {
   const classes = useStyles();
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -119,8 +119,15 @@ function MapBox({ selectedDestination }) {
 
     const addResponse = await addDestination(addData);
 
-    if (addResponse) {
+    if (addResponse?.success) {
+      setDestinations((prev) => [...prev, addResponse?.data]);
+
+      setModalIsOpen(false);
       toast.success("Your destination has been added!", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    } else if (!addResponse?.success && addResponse?.description === "repeat") {
+      toast.error(addResponse?.message, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     } else {
