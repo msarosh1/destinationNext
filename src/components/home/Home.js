@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { styled } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import Button from "@mui/material/Button";
@@ -11,6 +11,11 @@ import Typography from "@mui/material/Typography";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import { Grid } from "@mui/material";
 import Destinations from "../destinations/Destinations";
+import bgImage1 from "../../assets/bg-img-1.jpg";
+import bgImage2 from "../../assets/bg-img-2.jpg";
+import bgImage3 from "../../assets/bg-img-3.jpg";
+import bgImage4 from "../../assets/bg-img-4.jpg";
+import bgImage5 from "../../assets/bg-img-5.jpg";
 
 import MapBox from "./maps/MapBox";
 import axios from "axios";
@@ -37,7 +42,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const useStyles = makeStyles(() => ({
   heading: {
-    color: "#9F9C9B",
+    color: "#fff",
     fontSize: 15,
     margin: "8px 0px 12px",
   },
@@ -59,17 +64,45 @@ export default function Home() {
   const [destinations, setDestinations] = useState();
   const [selectedDestination, setSelectedDestination] = useState();
 
-  console.log("check home log");
+  const [bgImg, setBgImg] = useState([
+    bgImage1,
+    bgImage2,
+    bgImage3,
+    bgImage4,
+    bgImage5,
+  ]);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleLogout = async () => {
     localStorage.removeItem("isLoggedin");
     localStorage.removeItem("id");
     localStorage.removeItem("username");
 
-    // const logoutRes = await logout();
-
     navigate("/");
   };
+
+  const MapBoxWrapper = useMemo(() => {
+    return (
+      <MapBox
+        selectedDestination={selectedDestination}
+        setDestinations={setDestinations}
+      />
+    );
+  }, [selectedDestination]);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (currentIndex === bgImg.length - 1) {
+        setCurrentIndex(0);
+      } else {
+        setCurrentIndex(currentIndex + 1);
+      }
+    }, 10000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [currentIndex]);
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem("isLoggedin");
@@ -121,14 +154,17 @@ export default function Home() {
     console.log("");
   }, [destinations]);
 
-  // const handleGetAddressCallback = (destination) => {
-  //   console.log("Home -  selected", destination);
-  //   setSelectedDestination(destination);
-  // };
-
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box
+        sx={{
+          display: "flex",
+          backgroundImage: "url(" + bgImg[currentIndex] + ")",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
         <CssBaseline />
         <MuiAppBar position="fixed">
           <Toolbar
@@ -173,10 +209,6 @@ export default function Home() {
               sx={{ mt: 2, mb: 2 }}
               onClick={() => {
                 handleLogout();
-                // navigate("/");
-                // toast.warning("Logged out successfully", {
-                //   position: toast.POSITION.BOTTOM_RIGHT,
-                // });
               }}
             >
               Logout
@@ -191,8 +223,8 @@ export default function Home() {
             columns={{ xs: 5, md: 12 }}
             justifyContent={"center"}
             sx={{
-              height: "calc(100vh - 100px)",
-              overflowX: "hidden",
+              height: "calc(100vh - 89px)",
+              overflow: "hidden",
             }}
           >
             {destinations ? (
@@ -201,8 +233,8 @@ export default function Home() {
                   style={{
                     display: "flex",
                     justifyContent: "center",
-                    color: "#014493",
-                    borderBottom: "1px solid #00498E",
+                    color: "#fff",
+                    borderBottom: "1px solid #fff",
                     paddingBottom: 0,
                     marginBottom: 18,
                   }}
@@ -212,13 +244,13 @@ export default function Home() {
                 <span
                   style={{
                     display: "flex",
-                    justifyContent: "flex-end",
+                    justifyContent: "center",
                     marginBottom: 20,
                   }}
                 >
                   {" "}
                   <h6 className={classes.heading}>
-                    <span style={{ fontSize: 24, color: "#00489E" }}>
+                    <span style={{ fontSize: 24, color: "white" }}>
                       {destinations ? destinations?.length : 0}&nbsp;
                     </span>
                     destinations found
@@ -238,17 +270,18 @@ export default function Home() {
                 style={{
                   display: "flex",
                   justifyContent: "center",
-                  color: "#014493",
-                  borderBottom: "1px solid #00498E",
+                  color: "#fff",
+                  borderBottom: "1px solid #fff",
                   marginBottom: 0,
                 }}
               >
                 <h3 style={{ marginBottom: 3 }}>Pick your destination</h3>
               </div>
-              <MapBox
+              {MapBoxWrapper}
+              {/* <MapBox
                 selectedDestination={selectedDestination}
                 setDestinations={setDestinations}
-              />
+              /> */}
             </Grid>
           </Grid>
         </Main>
