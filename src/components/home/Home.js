@@ -191,7 +191,7 @@ export default function Home() {
                 }}
               />
               <Typography variant="p" noWrap component="div">
-                DESTINATION NEXT
+                Trip Log
               </Typography>
             </div>
             <Button
