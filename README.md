@@ -76,4 +76,4 @@ After creating an app, it should look something like:
 
 ## Suggestions
 If you feel like this app could be improved in any way, or have any feedback for this application, please feel free to contact the authors at:
-manhazamir@gmail.com & muhammadsarosh@hotmail.com 
+muhammadsarosh@hotmail.com & manhazamir@gmail.com.
